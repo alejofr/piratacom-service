@@ -5,20 +5,25 @@ import { createProxyMiddleware } from 'http-proxy-middleware';
 @Injectable()
 export class ProxyMiddleware implements NestMiddleware {
   private proxy = createProxyMiddleware({
-    target: 'https://chat.openai.com',
+    target: 'https://chatgpt.com',
     changeOrigin: true,
     secure: true,
     ws: true,
+    pathRewrite: function (path, req) {
+      // strip /ui prefix
+      return path.replace(/^\/ui/, '');
+    },
     onProxyReq: (proxyReq, req: Request, res: Response) => {
       const cookie = process.env.CHATGPT_SESSION_COOKIE;
-      console.log(cookie);
       if (cookie) {
         proxyReq.setHeader('Cookie', cookie);
       }
+      // optionally you can set referer, origin etc.
     },
   });
 
   use(req: Request, res: Response, next: () => void) {
+    // delegate to http-proxy-middleware
     (this.proxy as any)(req, res, next);
   }
 }
