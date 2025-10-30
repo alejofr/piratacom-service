@@ -11,6 +11,7 @@ export class ProxyMiddleware implements NestMiddleware {
     ws: true,
     onProxyReq: (proxyReq, req: Request, res: Response) => {
       const cookie = process.env.CHATGPT_SESSION_COOKIE;
+      console.log(cookie);
       if (cookie) {
         proxyReq.setHeader('Cookie', cookie);
       }
