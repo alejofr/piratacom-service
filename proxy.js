@@ -27,36 +27,6 @@ app.use('/', createProxyMiddleware({
   }
 }));
 
-app.all('/api/*', async (req, res) => {
-  const url = 'https://chatgpt.com' + req.path.replace('/api', '');
-  const method = req.method;
-  const headers = {
-    ...req.headers,
-    host: 'chatgpt.com',
-    cookie: '__Secure-next-auth.session-token=TU_TOKEN; __Secure-next-auth.callback-url=TU_CALLBACK;',
-  };
-
-  // Elimina headers que pueden causar problemas
-  delete headers['origin'];
-  delete headers['referer'];
-
-  const options = {
-    method,
-    headers,
-    body: ['GET', 'HEAD'].includes(method) ? undefined : JSON.stringify(req.body),
-  };
-
-  try {
-    const response = await fetch(url, options);
-    const data = await response.text();
-    res.set('Access-Control-Allow-Origin', '*');
-    res.set('Access-Control-Allow-Credentials', 'true');
-    res.status(response.status).send(data);
-  } catch (err) {
-    res.status(500).send('Proxy error');
-  }
-});
-
 https.createServer(options, app).listen(3000, () => {
   console.log('Servidor HTTPS en https://18.217.9.138:3000');
 });
