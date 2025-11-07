@@ -29,24 +29,46 @@ let cookies = [];
 (async () => {
   // Lanzar el navegador y abrir una nueva página
   browser = await puppeteer.launch({
-    headless: false,
-    args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    headless: true,
+    args: [
+      "--no-sandbox",
+      "--disable-setuid-sandbox",
+      "--disable-dev-shm-usage",
+      "--disable-accelerated-2d-canvas",
+      "--disable-gpu",
+      "--window-size=1920,1080",
+    ],
   });
-  
+
   page = await browser.newPage();
   await page.setUserAgent(
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
   );
-  await page.screenshot({ path: "debug-login-button.png" });
+
+  // Captura de pantalla inicial para depuración
+  await page.screenshot({ path: "debug-initial-headless.png" });
 
   // Navegar a la página de inicio de sesión
-  await page.goto("https://chatgpt.com");
+  await page.goto("https://chatgpt.com", { waitUntil: "networkidle2" });
 
-  // Esperar a que el botón de login esté disponible
-  await page.waitForSelector('button[data-testid="login-button"]');
+  // Esperar a que el botón de login esté disponible y visible
+  try {
+    await page.waitForSelector('button[data-testid="login-button"]', { visible: true, timeout: 60000 });
+    const loginButton = await page.$('button[data-testid="login-button"]');
 
-  // Hacer clic en el botón de login
-  await page.click('button[data-testid="login-button"]');
+    if (loginButton) {
+      await loginButton.evaluate((btn) => btn.scrollIntoView());
+      await loginButton.click();
+    } else {
+      console.error("El botón de login no se encontró.");
+      await page.screenshot({ path: "debug-login-button-not-found.png" });
+      return;
+    }
+  } catch (error) {
+    console.error("Error al interactuar con el botón de login:", error);
+    await page.screenshot({ path: "debug-login-button-error.png" });
+    return;
+  }
 
   // Esperar a que el modal de login esté visible
   await page.waitForSelector('div[role="dialog"]');
