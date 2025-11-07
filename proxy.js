@@ -30,6 +30,7 @@ let cookies = [];
   // Lanzar el navegador y abrir una nueva página
   browser = await puppeteer.launch({
     headless: false,
+    args: ["--no-sandbox", "--disable-setuid-sandbox"],
   });
   
   page = await browser.newPage();
