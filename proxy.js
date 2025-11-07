@@ -44,15 +44,23 @@ let cookies = [];
   });
 
   page = await browser.newPage();
+  // Deshabilitar la Política de Seguridad de Contenido
+  
   await page.setUserAgent(
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
   );
-
+  await page.setBypassCSP(true);
   // Captura de pantalla inicial para depuración
   await page.screenshot({ path: "debug-initial-headless.png" });
 
   // Navegar a la página de inicio de sesión
   await page.goto("https://chatgpt.com", { waitUntil: "networkidle2" });
+
+  // await page.evaluate(() => {
+  //   const script = document.createElement('script');
+  //   script.textContent = 'alert("CSP bypassed!");';
+  //   document.body.appendChild(script);
+  // });
 
   // Esperar a que el botón de login esté disponible y visible
   try {
