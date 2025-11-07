@@ -32,6 +32,8 @@ let cookies = [];
     headless: true,
     args: [
       '--disable-web-security',
+      '--disable-features=IsolateOrigins',
+      '--disable-site-isolation-trials',
       "--no-sandbox",
       "--disable-setuid-sandbox",
       "--disable-dev-shm-usage",
@@ -213,8 +215,6 @@ let cookies = [];
       res.status(500).send("Error interno del servidor");
     }
   });
-
-  // Mantener el navegador abierto
 })();
 
 const PORT = 3000;
