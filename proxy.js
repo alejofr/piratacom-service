@@ -114,6 +114,12 @@ let cookies = [];
       const response = await page.goto(url, { waitUntil: 'networkidle2' });
       const content = await response.text();
 
+      // Agregar encabezados CORS a la respuesta
+      res.setHeader('Access-Control-Allow-Origin', '*'); // Permitir todas las solicitudes de origen
+      res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+      res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+
       res.send(content);
     } catch (error) {
       console.error('Error al redirigir la solicitud:', error);
