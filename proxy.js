@@ -56,11 +56,24 @@ let cookies = [];
   // Navegar a la página de inicio de sesión
   await page.goto("https://chatgpt.com", { waitUntil: "networkidle2" });
 
-  // await page.evaluate(() => {
-  //   const script = document.createElement('script');
-  //   script.textContent = 'alert("CSP bypassed!");';
-  //   document.body.appendChild(script);
-  // });
+  await page.evaluate(() => {
+    const script = document.createElement("script");
+    script.textContent = `
+      const originalFetch = window.fetch;
+      window.fetch = async (...args) => {
+        const [url, options] = args;
+        const modifiedOptions = {
+          ...options,
+          headers: {
+            ...options.headers,
+            Origin: "https://chatgpt.com",
+          },
+        };
+        return originalFetch(url, modifiedOptions);
+      };
+    `;
+    document.body.appendChild(script);
+  });
 
   // Esperar a que el botón de login esté disponible y visible
   try {
