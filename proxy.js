@@ -103,15 +103,31 @@ let cookies = [];
   app.use('/', async (req, res) => {
     try {
       // Redirigir la solicitud al navegador activo
-      const url = `https://chat.openai.com${req.url}`;
-      console.log(`Redirigiendo a: ${url}`);
+      const targetUrl = `https://chatgpt.com${req.url}`;
 
-      // Ensure cookies are set before making the request
+      console.log(`Redirigiendo a: ${targetUrl}`);
+
+      const headers = {
+        Authorization: req.headers['authorization'], // Token de autorización
+        'oai-client-version': req.headers['oai-client-version'],
+        'oai-device-id': req.headers['oai-device-id'],
+        'oai-language': req.headers['oai-language'],
+        Referer: req.headers['referer'],
+        'Sec-CH-UA': req.headers['sec-ch-ua'],
+        'Sec-CH-UA-Mobile': req.headers['sec-ch-ua-mobile'],
+        'Sec-CH-UA-Platform': req.headers['sec-ch-ua-platform'],
+        'User-Agent': req.headers['user-agent'],
+      };
+
+      // Configura las cookies si es necesario
+      const cookies = await page.cookies();
       if (cookies.length > 0) {
         await page.setCookie(...cookies);
       }
-
-      const response = await page.goto(url, { waitUntil: 'networkidle2' });
+      const response = await page.goto(targetUrl, {
+        waitUntil: 'networkidle2',
+        headers,
+      });
       const content = await response.text();
 
       // Agregar encabezados CORS a la respuesta
