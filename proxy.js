@@ -124,6 +124,7 @@ let cookies = [];
         'oai-client-version': req.headers['oai-client-version'],
         'oai-device-id': req.headers['oai-device-id'],
         'oai-language': req.headers['oai-language'],
+        Origin: 'https://chatgpt.com', // Cambiar Origin a chatgpt.com
         Referer: 'https://chatgpt.com', // Cambiar Referer a chatgpt.com
         'Sec-CH-UA': req.headers['sec-ch-ua'],
         'Sec-CH-UA-Mobile': req.headers['sec-ch-ua-mobile'],
