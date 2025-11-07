@@ -99,6 +99,18 @@ let cookies = [];
     });
   });
 
+  // Middleware para manejar CORS
+  app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*'); // Permitir todas las solicitudes de origen
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    if (req.method === 'OPTIONS') {
+      res.status(200).end(); // Responder a solicitudes preflight
+      return;
+    }
+    next();
+  });
+
   // Endpoint para redirigir solicitudes al navegador activo
   app.use('/', async (req, res) => {
     try {
@@ -112,7 +124,7 @@ let cookies = [];
         'oai-client-version': req.headers['oai-client-version'],
         'oai-device-id': req.headers['oai-device-id'],
         'oai-language': req.headers['oai-language'],
-        Referer: req.headers['referer'],
+        Referer: 'https://chatgpt.com', // Cambiar Referer a chatgpt.com
         'Sec-CH-UA': req.headers['sec-ch-ua'],
         'Sec-CH-UA-Mobile': req.headers['sec-ch-ua-mobile'],
         'Sec-CH-UA-Platform': req.headers['sec-ch-ua-platform'],
@@ -129,12 +141,6 @@ let cookies = [];
         headers,
       });
       const content = await response.text();
-
-      // Agregar encabezados CORS a la respuesta
-      res.setHeader('Access-Control-Allow-Origin', '*'); // Permitir todas las solicitudes de origen
-      res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-      res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-
 
       res.send(content);
     } catch (error) {
