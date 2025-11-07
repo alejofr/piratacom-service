@@ -1,25 +1,129 @@
 import express from 'express';
-import { createProxyMiddleware } from 'http-proxy-middleware';
-
-const SESSION_TOKEN = 'eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..p_8ADMY4gW6W2TRv.W2BJhLYqhyDhciwYPH3G4i_FI040wKd25mgbmAliMJNg-O8WyseWq8QwA3WTlKq2I7tRH1g2ZrkpWGJQZf9g6U2Afu1sDi2KxcOOs1mtknxJB0-tPTYLx05GjUek2Nyi4441ALzE91GjfcwJkrLYw97VY_6osXALtIMW5wo5gt40QgVA1tV_kUS5ITnImR2ltCfu_hZR9lqHBtXBKu7ouQJcammNG8VWU-iDYPmI2ZBBLOel6gZuMbzOvvo0CwDaYuehm6AA0v62kOp6lw4gJ5fX3rQskcgz1_VoAs19iuV9b73mZA1jJb8cV8t-Xkt1oXpgbnTNnhH4foUd79XIPRb9GMtZAQsxCpwhQCHgc5mQ1qlJHkljRybXtWVv40zE5bD-xl_gcOVSdpQT1UqZUiu0cKJsFV37jJM9x5h_zvbCM8AC7uGHIVsvzFuojD8UhP_kI0vNtCba3L-FiSc6U1B2QXU2jQybk5E7oxVRYsMyTtzUexbEIKSjkfscJaPMRtL9T-q_eN4yx5UCrLJSzawB9yVlfiHo1KvZxSKb2Jc5B3NEtVPT-UWWcsgGgwz_-9c1pJTO9OCe_MweuaOAb-p7AzpT1uY7SLu89oAarJh0LCac8hRVdj-OeoOYyxuZqR4tCLmbNO6sBdQGb3mdzUU_iqdNqVZPPVPy1eoTEfJSEFBVu_k_nqeOw3KZL4eXZbNHhEmVMzm48fUAUIlye9vNqlmG8UvxwNZE-m-4JTKZeqwpJAi0GdJYw4f7VdzcHiUTPKpLzFqQVOzRxrhHS9kYI8mF8DXt3zhipNjuEeHUQR2hHLp3y8fk3M5c9_WZWk-WaBw023-_jDGqZ5-BUYSvZdw6aSlv2JUcOrPOftpvaPBHlngiqVzAHWC7r1hjjW2ZHH_mg1m_X21d5CXAiOyV6v19IS1lURm0AIzm1dMrB-8tvfKa4t-cTyhM6fYDC7-NrsCCEvt0X_vByuZqeBn2o80CIPRgmx7pyme24FykL4wdr1VEhwuy4qyAhIJ3CM45gKAdrL7WkjK-vucZxumJT_zUvzbv9EkRAMZltppNf7VGmuFT2w-xFpGFeGBg7Uh5yxdigRYhmp722ChVR8Nz-2FR0jkc3VyIAgBMoYPNTX_VHyt8KEWqyuQADMdYL4mZk1GyeoI6TCwXdfM-h_FTuzkI0Mg16iUinqSCNjjR7J-44PkcOC9TbYV3ELnrwT00xfzEb1TjhDBQgacklDPtV8-zYkhUNOwHCsOJJBSCyOSpftLhy-uJNj6H_jtsnrXb9vtyOGXV9jLWTWGMFwVCPMv1J6cJZW2LJ9ayv5_Pzy4G4ltkD58RCqSKNbg9u1RuRNklu8sN_W47QQB2JqBbasHjnLGh_YsG7iVkgUmoxdmWp_oAuueciOCpL0yWkmcqOhUdk9g3FbrXQQ21-E2PI85nOxNHY4Yk5ozYqfaBVsjpDwlyJRDG_HQbGHVdLXeDjxrz0a18vU7uploIVe1U7ISxueyt0BeyRxx-nSJ-nLj4Lw-JgLDPsDamrV5TH8Z3m4xJC2ltiqRBwOQ4hZHA8emejL-e1lNNoMxUiudwZD0x42ZjoFeMOY6211tX7B5wiYCD7OyTjFkrJ-HcfDR49QTXw9IoVoO3LLX5iJhiZtjX1BfT5pn8eHkm2-DruuwVIMuUAYaug_-4DQuLzizsL0FqndxLKX-D8k3WrwXR0y_Uy4SAWGUejYHybYA3gpBIWkdpVOe_4nJM260-IPSvLr-IFv0ScqNSOEkilCO3RsDH_jt1WwXplfV-jj2H-SebJazzs9gZ0IEv6nQ7Zi0YaMPUgPsVk8ZJ_dIit9pSJxrbGtYcKZew4x8s9ZNt12Ns3D8UOaDTkM1yxd8sIbRYdnPg8EonxGuWK0mjEYYwlvMmAJeb4uaAWTBTTR60W9-E7sJu0p19HTooMDW7_hzgDBeKFddzYxO3L1wUCIFq4wNs5-ot26B0jveAquiwJ2gdRUwNqWvEa-OTRBE3PYPcoklkjnTBwtTDsmABnIx-XMk2sWIAr4XEDUbOk0WKMYhTTqtxVdc2qJaqVWQOqxef8SInxG8ewc1Uny3IPk0KXGbFkbI89m623_q_KVLemDP4Gg4T-sRcaaomGHRlwjXh_56zB0C0lcbYx93Mb60R--TJoCLfVxJD829Qqc4qV5d4CjJ72Bojox5ZIPHaC5kHcct2LsLSu4vYa1LVlsYFG57DaahRWQ-ShDJ7FZPsCz3GTgnONPf9C952kWBCcOfmkbtcTmZcDUL6czUQs8739gbnE_wYGlg4iS7LXTGpZYwkWy5GJiB7pSrDMqg4c6mv_bb7mYnc4w4eDgC3m6VO9GPG5UvdDJ4FszsgwxN-jYyooBJPuo8GaAVhYxb_GDOe80AZIcbhwNB_nioQRnprrXLbx7-Oe8IgUHJ1aykSXv7KeVyEQberwx66x_VP07ebOFlfNA7HSyLWmbaWrJV7jyx3800qRWb41irU_UQNHHQ65S5Mk9gcmdWkG04lhgKEoOnofaLF3k212e_mjyIaZoYbBdA5wKBawD-j0ANIbYRV4_-8VczsGUwoSYwNV-TevU0d2yZUKeWdykfslmOrJF1GrSaHXItmdm_ztdCc46PR5YOTi61tSWRrfcoAnhQ3aW8MML1PXTLjS9KCCEZTWrtGEa3EyQ-FnXLG2C3nTFK_Rpe9veFRYDz_xPfIoyZGtV4jhMG9u2FvDu6bbadGxBYhij_cTgO4iai6t3ey1GIxiJXMp7lr_MJs9J4o9jqy_cdu5xCD2vwfEEQepRx1MA1mDF8hzvs7xoVvz0S0li7q__5oIDjarYucp1TfZOifJivDS1Upbe_-s3wEDjgF5l5jhACcrGUcLz1rlpCf8JclT7HHkb6CPSORkLDrMhGgmjtquyySYjMkMr6z10sCF3ZFV2UHX4cLRbCgjrQV1p_QQLJ-C6EM58sK8YSWKRRuALMy65B19ai4oW-J4laq28iPW6ZFPq3sg4RBbiQe7T-Ue6ByF-6dIs8fwDWA5ZnaZIw8psnASNFCA7JfomtrtWOp0YIkAnMfIETGJkmQ_p306JHiyvQ99EmOL0sobJXU7HuJMd6z4Ao2AA2OU4bSa7CVFtPJpa9eFv_Em60RTYlAIH1owX6PZTeQJUvlBdvaduaM21fqik64fhfbxrnITPnxuCmKbO6iM8-2jWFHsSv4Ypt8KYX4f9sENyNRSKJJH0k.rLuLqIVdXpIfyTykuifLQw'
-const CALLBACK_URL = 'https%3A%2F%2Fchatgpt.com%2F'; // Reemplaza si es necesario
+import puppeteer from 'puppeteer';
+import readline from 'readline';
 
 const app = express();
 
-app.use('/', createProxyMiddleware({
-  target: 'https://chatgpt.com',
-  changeOrigin: true,
-  secure: false,
-  onProxyReq: (proxyReq, req, res) => {
-    proxyReq.setHeader('cookie', `__Secure-next-auth.session-token=${SESSION_TOKEN}; __Secure-next-auth.callback-url=${CALLBACK_URL};`);
-  },
-  onProxyRes: (proxyRes, req, res) => {
-    proxyRes.headers['Access-Control-Allow-Origin'] = '*';
-    proxyRes.headers['Access-Control-Allow-Credentials'] = 'true';
-  }
-}));
+let browser;
+let page;
+
+// Define cookies globally to ensure they are accessible in all scopes
+let cookies = [];
+
+(async () => {
+  // Lanzar el navegador y abrir una nueva página
+  browser = await puppeteer.launch({
+    headless: true,
+  });
+  page = await browser.newPage();
+  await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36');
+  await page.screenshot({ path: 'debug-login-button.png' });
+
+  // Navegar a la página de inicio de sesión
+  await page.goto('https://chatgpt.com');
+
+  // Esperar a que el botón de login esté disponible
+  await page.waitForSelector('button[data-testid="login-button"]');
+
+  // Hacer clic en el botón de login
+  await page.click('button[data-testid="login-button"]');
+
+  // Esperar a que el modal de login esté visible
+  await page.waitForSelector('div[role="dialog"]');
+
+  // Prompt the user to enter the email manually
+  const rlEmail = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
+
+  rlEmail.question('Por favor, introduce tu correo electrónico: ', async (email) => {
+    // Escribir el correo en el campo de entrada
+    await page.type('input#email', email);
+    rlEmail.close();
+
+    // Hacer clic en el botón de continuar en el modal
+    await page.waitForSelector('div[role="dialog"] button.btn-primary[type="submit"]');
+    await page.click('div[role="dialog"] button.btn-primary[type="submit"]');
+
+    // Wait for the password input field to be visible
+    await page.waitForFunction(() => {
+      const passwordInput = document.querySelector('input[name="current-password"]');
+      return passwordInput && passwordInput.offsetParent !== null;
+    });
+
+    // Prompt the user to enter the password manually
+    const rlPassword = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout
+    });
+
+    rlPassword.question('Por favor, introduce tu contraseña: ', async (password) => {
+      // Type the password into the input field
+      await page.type('input[name="current-password"]', password);
+      rlPassword.close();
+
+      // Wait for the "Continue" button to be visible
+      await page.waitForSelector('button[data-dd-action-name="Continue"]');
+      // Click the "Continue" button
+      await page.click('button[data-dd-action-name="Continue"]');
+
+      // Wait for the verification code input field to be visible
+      await page.waitForSelector('input[name="code"]');
+
+      // Prompt the user to enter the verification code in the console
+      const rlCode = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout
+      });
+
+      rlCode.question('Por favor, introduce el código de verificación enviado a tu correo: ', async (code) => {
+        // Type the verification code into the input field
+        await page.type('input[name="code"]', code);
+
+        // Wait for the "Continue" button to be visible
+        await page.waitForSelector('button[data-dd-action-name="Continue"][name="intent"][value="validate"]');
+        // Click the "Continue" button
+        await page.click('button[data-dd-action-name="Continue"][name="intent"][value="validate"]');
+
+        // Wait for navigation or session confirmation
+        await page.waitForNavigation();
+
+        // Save cookies after successful login
+        cookies = await page.cookies();
+        console.log('✅ Cookies guardadas. Ya puedes acceder al proxy.');
+
+        rlCode.close();
+      });
+    });
+  });
+
+  // Endpoint para redirigir solicitudes al navegador activo
+  app.use('/', async (req, res) => {
+    try {
+      // Redirigir la solicitud al navegador activo
+      const url = `https://chat.openai.com${req.url}`;
+      console.log(`Redirigiendo a: ${url}`);
+
+      // Ensure cookies are set before making the request
+      if (cookies.length > 0) {
+        await page.setCookie(...cookies);
+      }
+
+      const response = await page.goto(url, { waitUntil: 'networkidle2' });
+      const content = await response.text();
+
+      res.send(content);
+    } catch (error) {
+      console.error('Error al redirigir la solicitud:', error);
+      res.status(500).send('Error interno del servidor');
+    }
+  });
+
+  // Mantener el navegador abierto
+})();
 
 const PORT = 3000;
 app.listen(PORT, () => {
-  console.log(`Proxy corriendo en http://localhost:${PORT}`);
+  console.log(`Inicando...`);
 });
