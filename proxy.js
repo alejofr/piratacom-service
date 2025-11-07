@@ -31,6 +31,7 @@ let cookies = [];
   browser = await puppeteer.launch({
     headless: true,
     args: [
+      '--disable-web-security',
       "--no-sandbox",
       "--disable-setuid-sandbox",
       "--disable-dev-shm-usage",
