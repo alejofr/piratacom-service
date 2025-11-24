@@ -7,34 +7,40 @@ puppeteer.use(StealthPlugin());
 const app = express();
 const PORT = 3000;
 
-// Route to serve ChatGPT interface
+// Ruta para servir la interfaz de ChatGPT
 app.get('/', async (req, res) => {
   try {
-    // Launch Puppeteer with stealth plugin
+    // Lanzar Puppeteer con el plugin stealth
     const browser = await puppeteer.launch({
-    executablePath: '/usr/bin/google-chrome', // Ruta al ejecutable de Chrome
-    headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      executablePath: '/usr/bin/google-chrome', // Ruta al ejecutable de Chrome
+      headless: true,
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-web-security', // Deshabilitar la seguridad web para evitar CORS
+        '--disable-features=IsolateOrigins,site-per-process', // Evitar restricciones de origen
+      ],
     });
+
     const page = await browser.newPage();
 
-    // Set User-Agent to mimic a real browser
+    // Configurar User-Agent para imitar un navegador real
     await page.setUserAgent(
       'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36'
     );
 
-    // Navigate to ChatGPT
+    // Navegar a ChatGPT
     await page.goto('https://chat.openai.com', {
       waitUntil: 'networkidle2',
     });
 
-    // Get the HTML content of the page
+    // Obtener el contenido HTML de la página
     const content = await page.content();
 
-    // Close the browser
+    // Cerrar el navegador
     await browser.close();
 
-    // Send the content to the client
+    // Enviar el contenido al cliente
     res.send(content);
   } catch (error) {
     console.error('Error rendering ChatGPT:', error);
@@ -42,7 +48,7 @@ app.get('/', async (req, res) => {
   }
 });
 
-// Start the server
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+// Iniciar el servidor
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server is running on http://0.0.0.0:${PORT}`);
 });
