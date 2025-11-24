@@ -12,8 +12,9 @@ app.get('/', async (req, res) => {
   try {
     // Launch Puppeteer with stealth plugin
     const browser = await puppeteer.launch({
-      headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    executablePath: '/usr/bin/google-chrome', // Ruta al ejecutable de Chrome
+    headless: true,
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
     const page = await browser.newPage();
 
