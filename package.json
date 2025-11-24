@@ -1,18 +1,14 @@
 {
-  "name": "chatgpt-proxy",
+  "name": "chatgpt-proxy-backend",
   "version": "1.0.0",
-  "main": "proxy.js",
-  "type": "module",
+  "description": "Backend proxy to serve ChatGPT interface using Puppeteer",
+  "main": "index.js",
   "scripts": {
-    "start": "node proxy.js"
+    "start": "node index.js"
   },
   "dependencies": {
-    "dotenv": "^17.2.3",
-    "express": "^4.21.2",
-    "http-proxy-middleware": "^3.0.5",
-    "node-fetch": "^3.3.2",
-    "pg": "^8.13.1",
-    "puppeteer": "^24.29.1",
+    "express": "^4.18.2",
+    "puppeteer": "^21.3.8",
     "puppeteer-extra": "^3.3.6",
     "puppeteer-extra-plugin-stealth": "^2.11.2"
   }
