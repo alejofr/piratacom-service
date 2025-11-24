@@ -12,13 +12,11 @@ app.get('/', async (req, res) => {
   try {
     // Lanzar Puppeteer con el plugin stealth
     const browser = await puppeteer.launch({
-      executablePath: '/usr/bin/google-chrome', // Ruta al ejecutable de Chrome
       headless: true,
       args: [
         '--no-sandbox',
+        '--disable-site-isolation-trials',
         '--disable-setuid-sandbox',
-        '--disable-web-security', // Deshabilitar la seguridad web para evitar CORS
-        '--disable-features=IsolateOrigins,site-per-process', // Evitar restricciones de origen
       ],
     });
 
