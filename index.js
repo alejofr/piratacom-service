@@ -15,9 +15,12 @@ app.get('/', async (req, res) => {
       executablePath: '/usr/bin/google-chrome',
       headless: true,
       args: [
-        '--disable-web-security',
-        '--disable-features=IsolateOrigins',
-        '--disable-site-isolation-trials'
+      '--disable-web-security',
+      '--disable-features=IsolateOrigins,site-per-process',
+      '--disable-site-isolation-trials',
+      '--disable-features=BlockInsecurePrivateNetworkRequests',
+      '--disable-features=SameSiteByDefaultCookies',
+      '--disable-features=CookiesWithoutSameSiteMustBeSecure',
       ],
     });
 
