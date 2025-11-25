@@ -15,9 +15,9 @@ app.get('/', async (req, res) => {
       executablePath: '/usr/bin/google-chrome',
       headless: true,
       args: [
-        '--disable-web-security',
-        '--disable-features=IsolateOrigins',
-        '--disable-site-isolation-trials'
+        '--no-sandbox',
+        '--disable-site-isolation-trials',
+        '--disable-setuid-sandbox',
       ],
     });
 
