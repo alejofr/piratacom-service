@@ -12,7 +12,7 @@ app.get('/', async (req, res) => {
   try {
     // Lanzar Puppeteer con el plugin stealth
     const browser = await puppeteer.launch({
-    //   executablePath: '/usr/bin/google-chrome',
+      executablePath: '/usr/bin/google-chrome',
       headless: true,
       args: [
         '--no-sandbox',
